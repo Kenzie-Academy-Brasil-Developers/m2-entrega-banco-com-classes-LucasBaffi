@@ -60,9 +60,9 @@ class Transacao {
             valorDaTransferencia: valorDaTransferencia,
             tipo: "recebimento",
           })
-          contaDestino.saldo  += valorDaTransferencia 
-          valorDaTransferencia += contaOrigem.saldo
-          
+          contaOrigem.saldo  -= valorDaTransferencia 
+          contaDestino.saldo += valorDaTransferencia
+         
           return {
             mensagem: "Transferência realizada com sucesso!"
           }
@@ -73,54 +73,53 @@ class Transacao {
               }
         }       
     }    
-}
-
-class Deposito {
     static deposito(contaDestino, idDeposito, dataDoDeposito, valorDoDeposito){
-        contaDestino.saldo.push(valorDoDeposito)
-        contaDestino.historico.push({
-            idDeposito: idDeposito,
-            dataDoDeposito: dataDoDeposito,
-            valorDoDeposito: valorDoDeposito,
-            tipo: "recebimento",
-          })
-          return {
-            mensagem: "Depósito realizado com sucesso!"
-          }
+      contaDestino.saldo += valorDoDeposito
+      contaDestino.historico.push({
+          idDeposito: idDeposito,
+          dataDoDeposito: dataDoDeposito,
+          valorDoDeposito: valorDoDeposito,
+          tipo: "recebimento",
+        })
+        return {
+          mensagem: "Depósito realizado com sucesso!"
+        }
+  }
+  static pagamentoSalario (contaOrigem, contaDestino, idPagamento, dataDoPagamento, valorDoSalario){
+    if(contaOrigem instanceof PessoaFisica && valorDoSalario > 1000){
+     return {
+         mensagem: "Seu limite máximo para este tipo de operação é de 1000.Entre em contato com o banco."
+       }
+    }else if (contaOrigem.saldo < valorDoSalario){
+     return {
+         mensagem: "Saldo insuficiente para realizar o pagamento!"
+       }          
+    }else{
+     contaOrigem.saldo -= valorDoSalario
+     contaDestino.saldo += valorDoSalario
+  
+     contaDestino.historico.push({
+         idPagamento: idPagamento,
+         dataDoPagamento: dataDoPagamento,
+         valorDoSalario: valorDoSalario,
+         tipo: "recebimento",
+       })
+       contaOrigem.historico.push({
+         idPagamento: idPagamento,
+         dataDoPagamento: dataDoPagamento,
+         valorDoSalario: valorDoSalario,
+         tipo: "pagamento"
+       })
+       return {
+         mensagem: "Pagamento realizado com sucesso!"
+       }
     }
+ 
+ }
 }
 
-class Salario {
-    static pagamentoSalario (contaOrigem, contaDestino, idPagamento, dataDoPagamento, valorDoSalario){
-       if(contaOrigem instanceof PessoaFisica && valorDoSalario > 1000){
-        return {
-            mensagem: "Seu limite máximo para este tipo de operação é de 1000.Entre em contato com o banco."
-          }
-       }else if (contaOrigem < valorDoSalario){
-        return {
-            mensagem: "Saldo insuficiente para realizar o pagamento!"
-          }          
-       }else{
-        valorDoSalario.push(contaDestino.saldo)
-        contaDestino.push({
-            idPagamento: idPagamento,
-            dataDoPagamento: dataDoPagamento,
-            valorDoSalario: valorDoSalario,
-            tipo: "recebimento",
-          })
-          contaOrigem.historico.push({
-            idPagamento: idPagamento,
-            dataDoPagamento: dataDoPagamento,
-            valorDoSalario: valorDoSalario,
-            tipo: "pagamento"
-          })
-          return {
-            mensagem: "Pagamento realizado com sucesso!"
-          }
-       }
-    
-    }
-}
+
+
 
 
 
