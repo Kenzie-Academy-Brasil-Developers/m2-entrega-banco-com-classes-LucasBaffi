@@ -1,5 +1,5 @@
 // Desenvolva seu código aqui!
-class cliente {
+class Cliente {
     constructor(idCliente, tipoCliente, dataCriacao, codBanco, agencia, conta, saldo) {
         this.idCliente = idCliente
         this.tipoCliente = tipoCliente
@@ -12,10 +12,11 @@ class cliente {
         this.historico = []
     }
 }
-
+//instancia de classe
+const lucas = new Cliente ('')
 
 //estends herda propriedades da classe mae
-class PessoaFisica extends cliente {
+class PessoaFisica extends Cliente {
     constructor(idCliente, tipoCliente, dataCriacao , codBanco, agencia, conta, saldo, nome, cpf, email, telefone, dataDeNascimento) {
         //puxar as propriedades da classe mae
         super(idCliente, tipoCliente, dataCriacao, codBanco, agencia, conta, saldo)
